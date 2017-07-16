@@ -12,9 +12,8 @@ namespace ShowDataInChart
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
             var clients = GetAllClientFromDb();
-            var allClientDto = MapToAllClientDto(clients);
+            var allClientDto = MapAllClientsToDto(clients);
             var js = new JavaScriptSerializer();
             hdnAllClients.Value = string.Empty;
             hdnAllClients.Value = js.Serialize(allClientDto);
@@ -70,7 +69,7 @@ namespace ShowDataInChart
 
         }
 
-        public List<ClientDto> MapToAllClientDto(List<Client> clients )
+        public List<ClientDto> MapAllClientsToDto(List<Client> clients)
         {
             var allClientDto = new List<ClientDto>();
             foreach (var client in clients)
@@ -101,9 +100,9 @@ namespace ShowDataInChart
         {
             ddlClient.DataValueField = "Id";
             ddlClient.DataTextField = "Name";
-            ddlClient.Items.Insert(0, new ListItem("Select Client", "0"));
             ddlClient.DataSource = allClientDto;
             ddlClient.DataBind();
+            ddlClient.Items.Insert(0, new ListItem("Select Client", "0"));
            
         }
 

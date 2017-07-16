@@ -1,23 +1,18 @@
 ﻿$(function () {
 
-    showAllClients();
+    var clients = $("#hdnAllClients").val();
+    if (clients) {
+        showAllClients(clients);
+    }
 
     var client = $("#hdnClient").val();
-
     if (client) {
-        showClient();
+        showClient(client);
     }
-  
+
 });
-function showAllClients() {
-    var clients = $("#hdnAllClients").val();
-
-    if (!clients) {
-        return;
-    }
-        
+function showAllClients(clients) {
     var jsonClients = JSON.parse(clients);
-
     var labels = [];
     var jobOrders = [];
     var backgroundColor = [];
@@ -58,15 +53,9 @@ function showAllClients() {
     var allClientsCtx = $("#pie-chart-allClients");
     var clientsChart = new Chart(allClientsCtx, pieOptionsForAllClients);
 }
-function showClient() {
-
-    var client = $("#hdnClient").val();
-    if (!client) {
-        return;
-    }
+function showClient(client) {
     var jsonClient = JSON.parse(client);
-
-    var pieOptionsForClient= {
+    var pieOptionsForClient = {
         type: 'pie',
         data: {
             labels: [jsonClient.Name],
