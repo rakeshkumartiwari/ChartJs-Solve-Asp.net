@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="ClientDto.cs" />
+    <Compile Include="ClientDtoMaper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

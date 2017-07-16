@@ -13,7 +13,7 @@ namespace ShowDataInChart
         protected void Page_Load(object sender, EventArgs e)
         {
             var clients = GetAllClientFromDb();
-            var allClientDto = MapAllClientsToDto(clients);
+            var allClientDto = ClientDtoMaper.MapAllClientsToDto(clients);
             var js = new JavaScriptSerializer();
             hdnAllClients.Value = string.Empty;
             hdnAllClients.Value = js.Serialize(allClientDto);
@@ -69,32 +69,7 @@ namespace ShowDataInChart
 
         }
 
-        public List<ClientDto> MapAllClientsToDto(List<Client> clients)
-        {
-            var allClientDto = new List<ClientDto>();
-            foreach (var client in clients)
-            {
-                var clientDto = new ClientDto
-                {
-                    Id = client.Id,
-                    Name = client.Name,
-                    JobOrders = client.JobOrders
-                };
-                allClientDto.Add(clientDto);
-            }
-            return allClientDto;
-        }
-
-        public ClientDto MapClientToDto(Client client)
-        {
-            var clientDto= new ClientDto
-            {
-                Id=client.Id,
-                Name = client.Name,
-                JobOrders = client.JobOrders
-            };
-            return clientDto;
-        }
+       
 
         public void RefreshDdlClient(List<ClientDto> allClientDto )
         {
@@ -115,7 +90,7 @@ namespace ShowDataInChart
                 return;
             }
             var client = GetClientById(clientId);
-            var clientDto = MapClientToDto(client);
+            var clientDto = ClientDtoMaper.MapClientToDto(client);
             var js = new JavaScriptSerializer();
 
             hdnClient.Value = js.Serialize(clientDto);
