@@ -10,9 +10,14 @@ namespace ShowDataInChart
 {
     public partial class Index : System.Web.UI.Page
     {
+        public IClientRepository ClientRepository ;
+        public Index()
+        {
+            ClientRepository=new ClientInMemoryRepository();
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
-            var clients = GetAllClientFromDb();
+            var clients =ClientRepository.GetAllClientFromDb();
             var allClientDto = ClientDtoMaper.MapAllClientsToDto(clients);
             var js = new JavaScriptSerializer();
             hdnAllClients.Value = string.Empty;
@@ -23,54 +28,6 @@ namespace ShowDataInChart
             }
         }
 
-        public List<Client> GetAllClientFromDb()
-        {
-            var clients = new List<Client>
-            {
-                new Client
-                {
-                    Id=1,
-                    Name = "Rakesh",
-                    JobOrders = 35
-                    
-                },
-                 new Client
-                {
-                    Id=2,
-                    Name = "Ritesh",
-                    JobOrders = 50
-                    
-                },
-                 new Client
-                {
-                    Id=3,
-                    Name = "Rupesh",
-                    JobOrders = 70
-                    
-                },
-                 new Client
-                {
-                    Id=4,
-                    Name = "Rajnish",
-                    JobOrders = 85
-                    
-                }
-               
-
-            };
-            return clients;
-        }
-
-        public Client GetClientById(int id)
-        {
-            var clients = GetAllClientFromDb();
-            var client = clients.FirstOrDefault(c => c.Id == id);
-            return client;
-
-        }
-
-       
-
         public void RefreshDdlClient(List<ClientDto> allClientDto )
         {
             ddlClient.DataValueField = "Id";
@@ -78,7 +35,7 @@ namespace ShowDataInChart
             ddlClient.DataSource = allClientDto;
             ddlClient.DataBind();
             ddlClient.Items.Insert(0, new ListItem("Select Client", "0"));
-           
+         
         }
 
         protected void ddlClient_SelectedIndexChanged(object sender, EventArgs e)
@@ -89,10 +46,9 @@ namespace ShowDataInChart
             {
                 return;
             }
-            var client = GetClientById(clientId);
+            var client =ClientRepository.GetClientById(clientId);
             var clientDto = ClientDtoMaper.MapClientToDto(client);
             var js = new JavaScriptSerializer();
-
             hdnClient.Value = js.Serialize(clientDto);
         }
 
